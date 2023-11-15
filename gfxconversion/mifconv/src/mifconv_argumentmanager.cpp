@@ -454,7 +454,7 @@ void MifConvArgumentManager::AddArguments( const MifConvStringList& argList, boo
 			MifConvString argName((*i).begin()+1, (*i).end());
             MifConvUtil::ToLower(argName); // Lower the cases to make comparison easier later
             std::pair<BooleanArgMap::iterator, bool> res = iBooleanArguments.insert(std::make_pair<MifConvString, MifConvBooleanArgument>(
-				argName, MifConvBooleanArgument( argName, true )));
+				std::string(argName), MifConvBooleanArgument( argName, true )));
             if( res.second == false )
             {
                 // parameter already exists in the map, update the value:
@@ -474,7 +474,7 @@ void MifConvArgumentManager::AddArguments( const MifConvStringList& argList, boo
 			}
 			// Insert string type argument to the string arguments list:
 			std::pair<StringArgMap::iterator, bool> res = iStringArguments.insert(std::make_pair<MifConvString, MifConvStringArgument>(
-				argName, MifConvStringArgument( argName, argValue )));
+				std::string(argName), MifConvStringArgument( argName, argValue )));
             if( res.second == false )
             {
                 // parameter already exists in the map, update the value:
@@ -496,7 +496,7 @@ void MifConvArgumentManager::AddArguments( const MifConvStringList& argList, boo
 			}
 			// Insert string list type argument to the string arguments list:
 			std::pair<StringListArgMap::iterator, bool> res = iStringListArguments.insert(std::make_pair<MifConvString, MifConvStringListArgument>(
-				argName, MifConvStringListArgument( argName, argValue )));
+				std::string(argName), MifConvStringListArgument( argName, argValue )));
             if( res.second == false )
             {
                 // parameter already exists in the map, update the value:

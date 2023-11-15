@@ -99,7 +99,7 @@ for dir in targetdirs:
 	releasables.append(targetpath)
 	
 	if options.debug:
-		print "target path =", targetpath
+		print("target path =", targetpath)
 
 copiers.append(targetdirs[0] + "/" + targetname)
 
@@ -117,15 +117,15 @@ if options.header:
 	releasables.append(headerpath)
 	
 if options.debug and options.header:
-	print "header path =", headerpath
+	print("header path =", headerpath)
 
 # gather the list of source names
 sources = []
 
-def parse_sources(str, list):
+def parse_sources(str, list_):
 	# split the string into (arg, filename) tuples and add to the list
 	items = str.split()
-	list.extend(zip(items[::2], items[1::2]))
+	list_.extend(list(zip(items[::2], items[1::2])))
 
 if options.sources:
 	parse_sources(options.sources, sources)
@@ -137,7 +137,7 @@ if options.sourcefile:
 		for line in file:
 			parse_sources(line, sources)
 		file.close()
-	except Exception, ex:
+	except Exception as ex:
 		sys.stderr.write("error: %s\n" % str(ex))
 		sys.exit(1)
 		
@@ -147,7 +147,7 @@ if not sources:
 	
 if options.debug:
 	for s in sources:
-		print "source =", s
+		print("source =", s)
 
 # take the source names and search for the actual file paths.
 # the search list is an ordered sequence of (directory, extension) pairs.
@@ -193,9 +193,9 @@ if not bmp and not svg:
 	
 if options.debug:
 	for b in bmp:
-		print "bmp =", b
+		print("bmp =", b)
 	for s in svg:
-		print "svg =", s
+		print("svg =", s)
 
 # if an MBM file will be generated then add it to the releasables.
 # there will be an MBM if any BMP files are used.
@@ -206,7 +206,7 @@ if bmp:
 			mbm = r[0:-4] + ".mbm"
 			releasables.append(mbm)
 			if options.debug:
-				print "mbm =", mbm
+				print("mbm =", mbm)
 
 	for c in copiers:
 		if c.endswith(".mif"):
@@ -219,7 +219,7 @@ if options.manifest:
 		for r in releasables:
 			file.write(r + "\n")
 		file.close()
-	except Exception, ex:
+	except Exception as ex:
 		sys.stderr.write("error: %s\n" % str(ex))
 		sys.exit(1)
 		
@@ -249,7 +249,7 @@ regenerated_svgb = False
 for (opt, src) in svg:
 	svgcopy = tmpdir + "/" + os.path.basename(src)
 	if options.debug:
-		print "svg copy =", svgcopy
+		print("svg copy =", svgcopy)
 		
 	if options.make == "CLEAN":
 		# remove svgcopy and svgcopy + "b" if they exist
@@ -270,7 +270,7 @@ for (opt, src) in svg:
 		   or os.path.getmtime(svgcopy) < os.path.getmtime(src):
 			try:
 				shutil.copy(src, svgcopy)
-			except Exception, ex:
+			except Exception as ex:
 				sys.stderr.write("error: %s\n" % str(ex))
 				sys.exit(1)
 				
@@ -279,7 +279,7 @@ for (opt, src) in svg:
 		   or os.path.getmtime(svgcopy + "b") < os.path.getmtime(svgcopy):
 			command = svgoptions + [svgcopy]
 			if options.debug:
-				print "command =", " ".join(command)
+				print("command =", " ".join(command))
 				
 			returncode = subprocess.call(command)
 			if returncode != 0:
@@ -314,7 +314,7 @@ for (opt, b) in bmp:
 	if mask:
 		all_bmp.append(mask)
 		if options.debug:
-			print "mask =", mask
+			print("mask =", mask)
 	
 # track whether any BMP file is newer than the target file(s).
 # and make sure all the input BMP files exist.
@@ -338,12 +338,12 @@ for b in all_bmp:
 # if all the bitmaps are older than the targets then we have nothing to do
 if not new_bmp and not regenerated_svgb:
 	if options.debug:
-		print "all the targets are up to date."
+		print("all the targets are up to date.")
 	sys.exit(0)
 
 # write all the mifconv options into the command file
 if options.debug:
-	print "commandfile =", commandfile
+	print("commandfile =", commandfile)
 try:
 	file = open(commandfile, "w")
 	if options.header:
@@ -360,7 +360,7 @@ try:
 		file.write(opt.replace('/', '-') + " " + name + "\n")
 		
 	file.close()
-except Exception, ex:
+except Exception as ex:
 	sys.stderr.write("error: %s\n" % str(ex))
 	sys.exit(1)
 
@@ -370,7 +370,7 @@ command = [ os.getenv("MIFCONV", options.epocroot + "/epoc32/tools/mifconv" + ex
             "-F" + commandfile ]
 
 if options.debug:
-	print "command =", " ".join(command)
+	print("command =", " ".join(command))
 				
 returncode = subprocess.call(command)
 if returncode != 0:
@@ -386,8 +386,8 @@ if len(targetdirs) > 1:
 			try:
 				shutil.copy(c, dir)
 				if options.debug:
-					print "copy =", c, "to", dir
-			except Exception, ex:
+					print("copy =", c, "to", dir)
+			except Exception as ex:
 				sys.stderr.write("error: %s\n" % str(ex))
 				errors += 1
 	if errors:

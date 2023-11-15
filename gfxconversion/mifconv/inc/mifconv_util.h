@@ -22,6 +22,8 @@
 #include "mifconv.h"
 #include "mifconv_sourcefile.h"
 #include <sstream>
+#include <cstring>
+#include <cstdlib>
 
 class MifConvUtil
 {
